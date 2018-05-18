@@ -43,23 +43,27 @@ def _collect_names_in_tree(tree):
 
 def _get_all_names_from_path(project_path):
     trees = create_syntax_trees(project_path)
-    func_names = [n for n in flat([_collect_names_in_tree(t) for t in trees]) if
-                  not (n.startswith('__') and n.endswith('__'))]
+    collected_names = flat([_collect_names_in_tree(t) for t in trees])
+    func_names = [n for n in collected_names if not (n.startswith('__') and n.endswith('__'))]
     return flat([split_under_score_to_words(func_name) for func_name in func_names])
 
 
 def _get_funcs_names_from_path(project_path):
     trees = create_syntax_trees(project_path)
-    names = [f for f in flat([[node.name.lower() for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)]
-                              for tree in trees]) if not (f.startswith('__') and f.endswith('__'))]
-    return names
+    node_names = list()
+    for tree in trees:
+        node_names.extend(flat([node.name.lower() for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)]))
+    func_names = [n for n in node_names if not (n.startswith('__') and n.endswith('__'))]
+    return func_names
 
 
 def _get_locals_names_from_path(project_path):
     trees = create_syntax_trees(project_path)
-    func_nodes = flat([[node.body for node in ast.walk(t) if isinstance(node, ast.FunctionDef)] for t in trees])
-    locals = flat([[a.targets[0].id for a in n if isinstance(a, ast.Assign)] for n in func_nodes])
-    return locals
+    func_nodes = list()
+    for tree in trees:
+        func_nodes.extend(flat([node.body for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)]))
+    locals_names = flat([[a.targets[0].id for a in n if isinstance(a, ast.Assign)] for n in func_nodes])
+    return locals_names
 
 
 def get_names_from_path(project_path, target='all'):

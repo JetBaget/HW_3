@@ -13,8 +13,8 @@ if __name__ == '__main__':
     parser.add_argument('-с', '--code_source', choices=['local', 'github'],
                         default=('local', None), nargs=2,
                         help='Источник кода, url (опционально)')
-    parser.add_argument('-p', '--path', nargs='?', default='for_test', help='Путь к директории проекта')
-    parser.add_argument('-s', '--part_of_speech', choices=['verb', 'noun'], nargs='?', default='noun',
+    parser.add_argument('-p', '--path', nargs='?', default='.', help='Путь к директории проекта')
+    parser.add_argument('-s', '--part_of_speech', choices=['verb', 'noun'], nargs='?', default='verb',
                         help='Часть речи для анализа')
     parser.add_argument('-t', '--analyze_target', choices=['funcs', 'locals', 'all'], nargs='?', default='funcs',
                         help='Объекты для анализа')
