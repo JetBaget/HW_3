@@ -1,0 +1,23 @@
+version: 1
+disable_existing_loggers: False
+
+formatters:
+  file_formatter:
+    format: '%(asctime)-24s %(levelname)-8s %(message)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+
+handlers:
+  file:
+    class: logging.handlers.RotatingFileHandler
+    filename: ../analyzer.log
+    level: INFO
+    formatter: file_formatter
+
+#loggers:
+#  parsers:
+#    level: INFO
+#    handlers: [file]
+
+root:
+  level: INFO
+  handlers: [file]
